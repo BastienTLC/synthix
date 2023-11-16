@@ -1,6 +1,5 @@
 // FrequencyGraph.js
-import React, { useEffect, useRef } from 'react';
-import { useSoundAnalysis } from '../../../context/SoundAnalysisContext';
+/*import React, { useEffect, useRef } from 'react';
 
 const FrequencyGraph = () => {
     const { soundAnalysisData } = useSoundAnalysis();

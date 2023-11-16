@@ -1,12 +1,15 @@
 import React from 'react';
 import Piano from '../components/Piano/Piano';
 import Monitoring from '../components/Monitoring/Monitoring';
+import { NoteProvider } from '../context/NoteContext';
 
 const StudioPage = () => {
     return (
         <div>
-            <Piano />
-            <Monitoring />
+            <NoteProvider>
+                <Piano />
+                <Monitoring />
+            </NoteProvider>
         </div>
     );
 };
