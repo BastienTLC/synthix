@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import { useNoteContext } from '../../context/NoteContext';
-
+import WaveformGraph from './graphs/WaveformGraph';
 const Monitoring = () => {
     const playedNoteParams = useNoteContext();
 
     useEffect(() => {
-        if (playedNoteParams) {
-            console.log('Note played:', playedNoteParams);
-            // Affiche les paramètres de la note dans le composant Monitoring
+        if (playedNoteParams.playedNoteParams) {
+            console.log('Note played:', playedNoteParams.playedNoteParams.waveform);
         }
     }, [playedNoteParams]);
 
     return (
         <div>
-            {/* Contenu du composant Monitoring */}
+            {/* Affiche le graphique de la waveform */}
+            <WaveformGraph waveform={playedNoteParams.playedNoteParams && playedNoteParams.playedNoteParams.waveform} />
         </div>
     );
 };

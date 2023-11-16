@@ -8,13 +8,12 @@ const NoteBind = ({ config }) => {
 
     const playNote = () => {
         const synth = new Tone.Synth(config.envelope).toDestination();
-        const analyser = new Tone.Analyser('waveform', 1024);
+        const analyser = new Tone.Analyser('waveform', 512);
         synth.connect(analyser);
 
         synth.triggerAttackRelease(config.frequency, '8n');
 
-        // Attends un court instant avant de récupérer les données de la forme d'onde
-        setTimeout(() => {
+        const intervalId = setInterval(() => {
             const waveform = analyser.getValue();
 
             // Filtre les valeurs différentes de zéro
@@ -23,13 +22,16 @@ const NoteBind = ({ config }) => {
             // Utilise la fonction de rappel du contexte pour fournir les paramètres du son
             handleNotePlay({ label: config.label, frequency: config.frequency, waveform: nonZeroValues });
 
-            // Affiche les valeurs différentes de zéro dans la console
-            console.log('Non-zero Waveform:', nonZeroValues);
+            // Si tu veux arrêter la transmission à un moment donné, tu peux arrêter l'intervalle
+            // clearInterval(intervalId);
+        }, 5); // Appelle la fonction toutes les 100 millisecondes (ajuste selon tes besoins)
 
-            // Nettoie les ressources audio
+        // Nettoie les ressources audio et arrête l'intervalle après un certain temps (600 millisecondes dans cet exemple)
+        setTimeout(() => {
             synth.dispose();
             analyser.dispose();
-        }, 200); // Attends 200 millisecondes (ajuste selon tes besoins)
+            clearInterval(intervalId);
+        }, 600); // Attends 600 millisecondes avant d'arrêter le son et l'intervalle
     };
 
     return (
