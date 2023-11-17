@@ -5,9 +5,7 @@ const Monitoring = () => {
     const playedNoteParams = useNoteContext();
 
     useEffect(() => {
-        if (playedNoteParams.playedNoteParams) {
-            console.log('Note played:', playedNoteParams.playedNoteParams.waveform);
-        }
+
     }, [playedNoteParams]);
 
     return (
