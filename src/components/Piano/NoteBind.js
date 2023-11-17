@@ -4,7 +4,7 @@ import * as Tone from 'tone';
 import { useNoteContext } from '../../context/NoteContext';
 
 const NoteBind = ({ config }) => {
-    const { handleNotePlay } = useNoteContext();
+    const { setPlayedNoteParams } = useNoteContext();
 
     const playNote = () => {
         const synth = new Tone.Synth(config.envelope).toDestination();
@@ -20,7 +20,7 @@ const NoteBind = ({ config }) => {
             const nonZeroValues = waveform.filter(value => value !== 0);
 
             // Utilise la fonction de rappel du contexte pour fournir les paramètres du son
-            handleNotePlay({ label: config.label, frequency: config.frequency, waveform: nonZeroValues });
+            setPlayedNoteParams({ label: config.label, frequency: config.frequency, waveform: nonZeroValues });
 
             // Si tu veux arrêter la transmission à un moment donné, tu peux arrêter l'intervalle
             // clearInterval(intervalId);
