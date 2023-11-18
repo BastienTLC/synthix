@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Knob } from 'primereact/knob';
 import { useNoteContext } from '../../context/NoteContext';
+import './ControlPanel.css';
 
 const ControlPanel = () => {
   // Define state variables for controlling the synth
