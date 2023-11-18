@@ -10,10 +10,12 @@ const NoteContext = createContext();
  */
 export const NoteProvider = ({ children }) => {
     const [playedNoteParams, setPlayedNoteParams] = useState({ label: 'C4', frequency: '100.63', envelope: { attack: 0.1, decay: 0.2, sustain: 0.5, release: 1 }, waveform: Array(0) });
+    const [volume, setVolume] = useState(75);
 
     const playNote = (config) => {
         const soundDuration = config.envelope.release;
         const synth = new Tone.Synth(config.envelope).toDestination();
+        synth.volume.value = (volume-70)/2;
         const analyser = new Tone.Analyser('waveform', 256);
         synth.connect(analyser);
 
@@ -41,7 +43,7 @@ export const NoteProvider = ({ children }) => {
     };
 
     return (
-        <NoteContext.Provider value={{ playedNoteParams, setPlayedNoteParams, playNote }}>
+        <NoteContext.Provider value={{ playedNoteParams, setPlayedNoteParams, playNote, volume, setVolume }}>
             {children}
         </NoteContext.Provider>
     );
