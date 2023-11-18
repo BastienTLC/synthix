@@ -9,26 +9,33 @@ const NoteContext = createContext();
  * @returns 
  */
 export const NoteProvider = ({ children }) => {
-    const [playedNoteParams, setPlayedNoteParams] = useState({ label: 'C4', frequency: '100.63', envelope: { attack: 0.1, decay: 0.2, sustain: 0.5, release: 1 }, waveform: Array(0) });
+    let analyserData = {
+        waveform: Array(0),
+        volume: 0,
+    }
+    const [playedNoteParams, setPlayedNoteParams] = useState({ label: 'C4', frequency: '100.63', envelope: { attack: 0.1, decay: 0.2, sustain: 0.5, release: 1 }, analyserData: analyserData });
     const [volume, setVolume] = useState(75);
+
 
     const playNote = (config) => {
         const soundDuration = config.envelope.release;
         const synth = new Tone.Synth(config.envelope).toDestination();
-        synth.volume.value = (volume-70)/2;
         const analyser = new Tone.Analyser('waveform', 256);
         synth.connect(analyser);
-
-        synth.triggerAttackRelease(config.frequency, '8n');
+        synth.triggerAttackRelease(config.frequency, '2n');
+        synth.volume.value = (volume-70)/2;
 
         const intervalId = setInterval(() => {
             const waveform = analyser.getValue();
-
+            analyserData = {
+                waveform: waveform,
+                volume: synth.volume.value,
+            }
             // Filtre les valeurs différentes de zéro
-            const nonZeroValues = waveform.filter(value => value !== 0);
+            //const nonZeroValues = waveform.filter(value => value !== 0);
 
             // Utilise la fonction de rappel du contexte pour fournir les paramètres du son
-            setPlayedNoteParams({ label: config.label, frequency: config.frequency, waveform: nonZeroValues });
+            setPlayedNoteParams({ label: config.label, frequency: config.frequency, analyserData: analyserData });
 
             // Si tu veux arrêter la transmission à un moment donné, tu peux arrêter l'intervalle
             // clearInterval(intervalId);
@@ -39,7 +46,7 @@ export const NoteProvider = ({ children }) => {
             synth.dispose();
             analyser.dispose();
             clearInterval(intervalId);
-        }, 1000*soundDuration); // Attends 600 millisecondes avant d'arrêter le son et l'intervalle
+        }, 1000*2); // Attends 600 millisecondes avant d'arrêter le son et l'intervalle
     };
 
     return (

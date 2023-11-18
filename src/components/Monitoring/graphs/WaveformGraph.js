@@ -62,7 +62,7 @@ const WaveformGraph = ({ waveform }) => {
     };
 
     return (
-        <div style={style}>
+        <div className={"waveform-graph"} style={style}>
             <Line ref={chartRef} data={data} options={options} />
         </div>
     );
