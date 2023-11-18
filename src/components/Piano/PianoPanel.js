@@ -1,10 +1,13 @@
 // PianoPanel.js
 import React from 'react';
 import NoteBind from './NoteBind';
+import { useNoteContext } from '../../context/NoteContext';
 import './PianoPanel.css'
 
-class PianoPanel extends React.Component {
-    keyConfigurations = [
+const PianoPanel = () => {
+    const { playNote } = useNoteContext();
+
+    const keyConfigurations = [
         { label: 'A4', frequency: '440', envelope: { attack: 0.05, decay: 0.1, sustain: 0.3, release: 0.5 } },
         { label: 'B4', frequency: '493.88', envelope: { attack: 0.05, decay: 0.1, sustain: 0.4, release: 0.6 } },
         { label: 'C5', frequency: '523.25', envelope: { attack: 0.05, decay: 0.1, sustain: 0.5, release: 0.7 } },
@@ -17,15 +20,37 @@ class PianoPanel extends React.Component {
         { label: 'C6', frequency: '1046.5', envelope: { attack: 0.05, decay: 0.1, sustain: 1.5, release: 2.0 } },
     ];
 
-    render() {
-        return (
-            <div className={"synth-piano-panel"}>
-                {this.keyConfigurations.map((config, index) => (
-                    <NoteBind key={index} config={config} />
-                ))}
-            </div>
-        );
-    }
+    const keyInputArray = [
+        'a',
+        'z',
+        'e',
+        'r',
+        't',
+        'y',
+        'u',
+        'i',
+        'o',
+        'p'
+    ];
+
+    /**
+     * Choppe la touche jouée et joue la note à la 
+     * position correspondante dans keyConfigurations.
+ 
+     * @param {*} e evenement "onKeyDown".
+     */
+    const handleNote = (e) => {
+        if(keyInputArray.includes(e.key))
+        playNote(keyConfigurations[keyInputArray.indexOf(e.key)]);
+    };
+
+    return (
+        <div className={"synth-piano-panel"} tabIndex={0} onKeyDown={(e) => {handleNote(e)}}>
+            {keyConfigurations.map((config, index) => (
+                <NoteBind key={index} config={config} />
+            ))}
+        </div>
+    );
 }
 
 export default PianoPanel;

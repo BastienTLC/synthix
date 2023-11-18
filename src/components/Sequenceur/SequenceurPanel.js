@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { useNoteContext } from '../../context/NoteContext';
+import React from 'react';
 import './SequenceurPanel.css';
 
 const SequenceurPanel = () => {
     // Define state variables for controlling the synth
-    const { volume, setVolume } = useNoteContext();
 
     return (
         <div className="synth-sequence-panel">
