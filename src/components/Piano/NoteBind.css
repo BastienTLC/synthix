@@ -1,0 +1,30 @@
+/*.prevent-style {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}*/
+
+.synth-note-bind {
+  width: 60px;
+  height: 180px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid #333;
+  background: #fff;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 2px 2px 5px #888888;
+}
+
+/*.synth-note-bind:hover {
+  border: 1px solid #333;
+  background: #eee;
+  width: 60px;
+  height: 180px; 
+  border-radius: 0 0 5px 5px;
+  box-shadow: 2px 2px 5px #888888;
+}*/

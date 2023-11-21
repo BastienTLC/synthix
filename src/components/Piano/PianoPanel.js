@@ -1,11 +1,23 @@
 // PianoPanel.js
-import React from 'react';
+import React , {useEffect, useState, useMemo} from 'react';
 import NoteBind from './NoteBind';
-import { useNoteContext } from '../../context/NoteContext';
-import './PianoPanel.css'
+import './PianoPanel.css';
 
 const PianoPanel = () => {
-    const { playNote } = useNoteContext();
+    const [keysPressed, setKeysPressed] = useState([]);
+    
+    const keyInputArray = useMemo( () => [ //optimisation des rafraichissements 
+        'a',
+        'z',
+        'e',
+        'r',
+        't',
+        'y',
+        'u',
+        'i',
+        'o',
+        'p'
+    ], []);
 
     const keyConfigurations = [
         { label: 'A4', frequency: '440', envelope: { attack: 0.05, decay: 0.1, sustain: 0.3, release: 0.5 } },
@@ -20,34 +32,31 @@ const PianoPanel = () => {
         { label: 'C6', frequency: '1046.5', envelope: { attack: 0.05, decay: 0.1, sustain: 1.5, release: 2.0 } },
     ];
 
-    const keyInputArray = [
-        'a',
-        'z',
-        'e',
-        'r',
-        't',
-        'y',
-        'u',
-        'i',
-        'o',
-        'p'
-    ];
-
-    /**
-     * Choppe la touche jouée et joue la note à la 
-     * position correspondante dans keyConfigurations.
- 
-     * @param {*} e evenement "onKeyDown".
-     */
-    const handleNote = (e) => {
-        if(keyInputArray.includes(e.key))
-        playNote(keyConfigurations[keyInputArray.indexOf(e.key)]);
-    };
+    useEffect(() => {
+      const handleKeyDown = (event) => {
+        // Vérif si la touche appuyée n'est pas déjà dans le tableau.
+        if (!keysPressed.includes(event.key) && keyInputArray.includes(event.key)) {
+          setKeysPressed([...keysPressed, event.key]); // Ajouter la touche appuyée au tableau
+        }
+      };
+      const handleKeyUp = (event) => {
+        // touche relâchée: on l'enlève du tableau
+        setKeysPressed(keysPressed.filter((key) => key !== event.key));
+      };
+  
+      // Écouter les événements de clavier au niveau de la fenêtre
+      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keyup', handleKeyUp);
+      };
+    }, [keysPressed, keyInputArray]);
 
     return (
-        <div className={"synth-piano-panel"} tabIndex={0} onKeyDown={(e) => {handleNote(e)}}>
+        <div className={"synth-piano-panel"} tabIndex={0} >
             {keyConfigurations.map((config, index) => (
-                <NoteBind key={index} config={config} />
+                <NoteBind key={index} config={config} keyInput={keyInputArray[index]} detectedInputs={keysPressed} />
             ))}
         </div>
     );

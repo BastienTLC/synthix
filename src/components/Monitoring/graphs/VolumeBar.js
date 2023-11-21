@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { ProgressBar } from 'primereact/progressbar';
 
 const VolumeBar = ({ volume }) => {
-    console.log(volume);
 
     const progressBarStyle = {
         transition: "none", // Désactive la transition
