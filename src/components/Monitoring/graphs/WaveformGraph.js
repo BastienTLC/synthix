@@ -3,23 +3,19 @@ import { Line } from 'react-chartjs-2';
 // eslint-disable-next-line no-unused-vars
 import { Chart } from 'chart.js/auto';
 
-const WaveformGraph = ({ waveform }) => {
+const WaveformGraph = ({ waveformArrays  }) => {
     const chartRef = useRef(null);
 
-    const maxAbsValue = Math.max(...waveform.map(value => Math.abs(value)));
-
-    // Ajuste le décalage pour que le zéro soit au centre du graphique
-    const offset = maxAbsValue;
 
     const data = {
-        labels: Array.from({ length: waveform.length }, (_, index) => index),
-        datasets: [{
-            label: 'Waveform',
-            data: waveform.map(value => value + offset),
-            borderColor: 'rgba(75, 192, 192, 1)',
+        labels: Array.from({ length: waveformArrays[0].length }, (_, index) => index),
+        datasets: waveformArrays.map((waveform, index) => ({
+            label: `Waveform ${index + 1}`,
+            data: waveform.map(value => value + Math.max(...waveform.map(value => Math.abs(value)))),
+            borderColor: `rgba(${index*50}, 0, ${255-index*50}, 1)`,
             borderWidth: 1,
             fill: false,
-        }],
+        })),
     };
 
     const options = {
@@ -28,7 +24,7 @@ const WaveformGraph = ({ waveform }) => {
                 type: 'linear',
                 position: 'bottom',
                 min: 0,
-                max: 256, // Valeur maximale pour l'axe des x
+                max: 64, // Valeur maximale pour l'axe des x
                 ticks: {
                     display: false, // Masque les valeurs de l'axe des y
                 },
