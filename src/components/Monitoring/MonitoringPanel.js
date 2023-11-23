@@ -18,9 +18,6 @@ const MonitoringPanel = () => {
         };
     }, [waveform]);
 
-    // Utilisez la fonction getMaxFrequency pour obtenir la fréquence maximale
-    const maxFrequency = getMaxFrequency(waveformArrays);
-
     return (
         <div className={"synth-monitoring-panel"}>
             <WaveformGraph />
