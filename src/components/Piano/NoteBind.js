@@ -1,16 +1,16 @@
 // NoteBind.js
 import React, { useRef, useEffect, useCallback} from 'react';
-import { useNoteContext } from '../../context/NoteContext';
+import { useSynthContext } from '../../context/SynthContext';
 import './NoteBind.css';
 
 const NoteBind = ({ config, keyInput, detectedInputs }) => {
-    const { playNote } = useNoteContext();
+    const { playNoteDirect } = useSynthContext();
     const monRef = useRef(null);
 
     /* -- Handlers evenements -- */
     const handleNote = useCallback(() => {
-        playNote(config);
-    }, [config, playNote]);
+        playNoteDirect([config.frequency]);
+    }, [config, playNoteDirect]);
 
     const handleMouseDown = () => { 
         monRef.current.style.background = '#444';
@@ -25,7 +25,6 @@ const NoteBind = ({ config, keyInput, detectedInputs }) => {
     useEffect(() => {
         if(detectedInputs.includes(keyInput)){
             handleMouseDown();//Utilisation du style 'souris appuyée'
-            handleNote();// on joue la note
         }else{
             handleMouseUp(); //Utilisation du style 'keyInput inactive'
         }

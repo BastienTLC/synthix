@@ -1,27 +1,25 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useSynthContext } from '../../../context/SynthContext';
 import { Line } from 'react-chartjs-2';
 // eslint-disable-next-line no-unused-vars
 import { Chart } from 'chart.js/auto';
 
-const WaveformGraph = ({ waveform }) => {
+const WaveformGraph = ( ) => {
+    const {waveform, updateWaveform} = useSynthContext();
     const chartRef = useRef(null);
-
-    const maxAbsValue = Math.max(...waveform.map(value => Math.abs(value)));
-
-    // Ajuste le décalage pour que le zéro soit au centre du graphique
-    const offset = maxAbsValue;
-
-    const data = {
-        labels: Array.from({ length: waveform.length }, (_, index) => index),
+    
+    const [data, setData] = useState({
+        labels: [],
         datasets: [{
             label: 'Waveform',
-            data: waveform.map(value => value + offset),
+            data: [],
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
             fill: false,
         }],
-    };
+    }); 
 
+    // Ajuste le décalage pour que le zéro soit au centre du graphique
     const options = {
         scales: {
             x: {
@@ -61,8 +59,33 @@ const WaveformGraph = ({ waveform }) => {
         height: '200px', // Hauteur fixe à 200px
     };
 
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            updateWaveform();
+        
+            const offset = Math.max(...waveform.map(value => Math.abs(value)));//maxAbsValue
+        
+            const updatedData = {
+                labels: Array.from({ length: waveform.length }, (_, index) => index),
+                datasets: [{
+                    label: 'Waveform',
+                    data: waveform.map(value => value + offset),
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: false,
+                }],
+            };
+        
+            setData(updatedData); 
+        }, 40); // Appelle la fonction toutes les 100 millisecondes (ajuste selon tes besoins)
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [waveform]);
+
     return (
-        <div className={"waveform-graph"} style={style}>
+        <div className={"waveform-graph"} style={style}> {/* idée: mettre un truc qui vérifie si le data.labels est un array car sinon il se chie dessus */} 
             <Line ref={chartRef} data={data} options={options} />
         </div>
     );

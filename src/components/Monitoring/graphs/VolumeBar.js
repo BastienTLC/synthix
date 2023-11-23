@@ -1,10 +1,9 @@
-import React, { useRef } from 'react';
 import { ProgressBar } from 'primereact/progressbar';
 
 const VolumeBar = ({ volume }) => {
 
     const progressBarStyle = {
-        transition: "none", // Désactive la transition
+        transition: "0.04s", // Désactive la transition
     };
 
     // Calcule la couleur en fonction du volume
@@ -28,6 +27,7 @@ const VolumeBar = ({ volume }) => {
     };
 
     return (
+
         <div className="volume-bar">
             <ProgressBar
                 value={volume * 100}

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect,useRef, useState } from 'react';
 import * as Tone from 'tone';
 
 const NoteContext = createContext(); 
@@ -9,59 +9,61 @@ const NoteContext = createContext();
  * @returns 
  */
 export const NoteProvider = ({ children }) => {
-    let analyserData = {
-        waveform: Array(0),
-        volume: 0,
-    }
-    const [playedNoteParams, setPlayedNoteParams] = useState({ label: 'C4', frequency: '100.63', envelope: { attack: 0.1, decay: 0.2, sustain: 0.5, release: 1 }, analyserData: analyserData });
+/*    const activeSynthsRef = useRef([]);
+    const [activeSynths, setActiveSynths] = useState([]);
     const [volume, setVolume] = useState(75);
 
-
     const playNote = (config) => {
-        const soundDuration = config.envelope.release;
         const synth = new Tone.Synth(config.envelope).toDestination();
-        const analyser = new Tone.Analyser('waveform', 256);
+        const analyser = new Tone.Analyser('waveform', 64);
         synth.connect(analyser);
-        synth.triggerAttackRelease(config.frequency, '2n');
-        synth.volume.value = (volume-70)/2;
+        synth.triggerAttackRelease(config.frequency, '8n');
+        synth.volume.value = (volume - 70) / 2;
+
+        activeSynthsRef.current.push({ synth, analyser });
 
         const intervalId = setInterval(() => {
             const waveform = analyser.getValue();
-            analyserData = {
-                waveform: waveform,
-                volume: synth.volume.value,
-            }
-            // Filtre les valeurs différentes de zéro
-            //const nonZeroValues = waveform.filter(value => value !== 0);
+            activeSynthsRef.current = activeSynthsRef.current.map((s) => {
+                if (s.synth === synth) {
+                    return {
+                        synth: s.synth,
+                        analyser: s.analyser,
+                        waveform: waveform,
+                        volume: synth.volume.value,
+                    };
+                }
+                return s;
+            });
 
-            // Utilise la fonction de rappel du contexte pour fournir les paramètres du son
-            setPlayedNoteParams({ label: config.label, frequency: config.frequency, analyserData: analyserData });
+            setActiveSynths([...activeSynthsRef.current]);
+        }, 40);
 
-            // Si tu veux arrêter la transmission à un moment donné, tu peux arrêter l'intervalle
-            // clearInterval(intervalId);
-        }, 30); // Appelle la fonction toutes les 100 millisecondes (ajuste selon tes besoins)
-
-        // Nettoie les ressources audio et arrête l'intervalle après un certain temps (600 millisecondes dans cet exemple)
         setTimeout(() => {
             synth.dispose();
             analyser.dispose();
+            activeSynthsRef.current = activeSynthsRef.current.filter((s) => s.synth !== synth);
+            setActiveSynths([...activeSynthsRef.current]);
             clearInterval(intervalId);
-        }, 1000*2); // Attends 600 millisecondes avant d'arrêter le son et l'intervalle
+        },  1000);
     };
 
+    useEffect(() => {
+        return () => {
+            activeSynthsRef.current.forEach(({ synth, analyser }) => {
+                synth.dispose();
+                analyser.dispose();
+            });
+        };
+    }, []);*/
+
     return (
-        <NoteContext.Provider value={{ playedNoteParams, setPlayedNoteParams, playNote, volume, setVolume }}>
+        <NoteContext.Provider value={{ /*activeSynths, playNote, volume, setVolume*/ }}>
             {children}
         </NoteContext.Provider>
     );
 };
 
-/** 
- * Passe un contexte vers les composants externes qui récupèrent le contexte (objet) et 
- * tout ses attributs visibles par les composants externes.
-
- * @returns context Contextecourant 
- */
 export const useNoteContext = () => {
     const context = useContext(NoteContext);
     if (!context) {

@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { Knob } from 'primereact/knob';
-import { useNoteContext } from '../../context/NoteContext';
+import { useSynthContext } from '../../context/SynthContext';
 import './ControlPanel.css';
 
 const ControlPanel = () => {
   // Define state variables for controlling the synth
-  const { volume, setVolume } = useNoteContext();
-
+  const { synth } = useSynthContext();
+  const [volume, setVolume] = useState(synth.options.volume);
+  
   return (
     <div className="synth-control-panel">
-      <Knob value={volume} onChange={(e) => setVolume(e.value)} />
+      <Knob value={volume} onChange={(e) => { synth.options.volume = e.value; setVolume(e.value); }} />
     </div>
   );
 };

@@ -1,20 +1,27 @@
-import React, { useEffect } from 'react';
-import { useNoteContext } from '../../context/NoteContext';
+import React, { useEffect, useState } from 'react';
+import { useSynthContext } from '../../context/SynthContext';
 import WaveformGraph from './graphs/WaveformGraph';
 import './MonitoringPanel.css';
 import VolumeBar from "./graphs/VolumeBar";
+
 const MonitoringPanel = () => {
-    const playedNoteParams = useNoteContext();
-    const volumeMax = Math.max(...playedNoteParams.playedNoteParams.analyserData.waveform.map(value => Math.abs(value)));
 
+    const {waveform} = useSynthContext();
+    const [volumeMax, setVolumeMax] = useState(0);
+    
     useEffect(() => {
-
-    }, [playedNoteParams]);
+        const intervalId = setInterval(() => {
+            setVolumeMax(Math.max(...waveform.map(value => Math.abs(value))));
+        }, 40); // Appelle la fonction toutes les 100 millisecondes (ajuste selon tes besoins)
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [waveform]);
 
     return (
         <div className={"synth-monitoring-panel"}>
-            <WaveformGraph waveform={playedNoteParams.playedNoteParams && playedNoteParams.playedNoteParams.analyserData.waveform} />
-            <VolumeBar volume={playedNoteParams.playedNoteParams && volumeMax} />
+            <WaveformGraph />
+            <VolumeBar volume={volumeMax} />
         </div>
     );
 };

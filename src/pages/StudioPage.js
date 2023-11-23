@@ -2,10 +2,13 @@ import React, {useEffect, useState} from 'react';
 import PianoPanel from '../components/Piano/PianoPanel';
 import MonitoringPanel from '../components/Monitoring/MonitoringPanel';
 import ControlPanel from '../components/Controls/ControlPanel';
+import { SynthProvider } from '../context/SynthContext';
 import { NoteProvider } from '../context/NoteContext';
 import SequenceurPanel from "../components/Sequenceur/SequenceurPanel";
 import { Splitter, SplitterPanel } from 'primereact/splitter';
 import './StudioPage.css';
+//import { Tone } from 'tone/build/esm/core/Tone';
+import * as Tone from 'tone';
 
 const StudioPage = () => {
     const [windowDimensions, setWindowDimensions] = useState({
@@ -32,10 +35,14 @@ const StudioPage = () => {
         width: `${window.innerWidth}px`,   // Largeur basée sur la fenêtre
         margin: 0,
     };
+    const allowAudioContext = async () => {
+        await Tone.start();
+        console.log('audio ready');
+    }
     return (
 
-        <div className={"synth-full-panel"} style={synthFullPanelStyle}>
-            <NoteProvider>
+        <div className={"synth-full-panel"} style={synthFullPanelStyle} onMouseDown={allowAudioContext} >
+            <SynthProvider>
                 <Splitter className={"synth-splitter"} style={{ height: '100%' }}>
                     <SplitterPanel size={100}>
                         <Splitter layout="vertical" style={{ height: '100%' }}>
@@ -58,7 +65,7 @@ const StudioPage = () => {
                         </Splitter>
                     </SplitterPanel>
                 </Splitter>
-            </NoteProvider>
+            </SynthProvider>
         </div>
     );
 };
