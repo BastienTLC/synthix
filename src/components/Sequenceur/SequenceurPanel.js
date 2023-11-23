@@ -9,9 +9,10 @@ import { ScrollPanel } from 'primereact/scrollpanel';
 
 
 const SequencerPanel = () => {
-    const [cursorPosition, setCursorPosition] = useState(0);
+    const [cursorPosition, setCursorPosition] = useState(-1);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
     const { playNoteDirect } = useSynthContext();
     const [bpmValue, setBpmValue] = useState(1);
 
@@ -71,11 +72,39 @@ const SequencerPanel = () => {
         setCursorPosition(0);
     };
 
+    const handleMouseDown = () => {
+        setIsDragging(true);
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = (event) => {
+        if (isDragging) {
+            setCursorPosition(event.clientX);
+        }
+    };
+
     return (
-        <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ width: '100%', height: '100%', cursor: isDragging ? 'grabbing' : '', }}
+             handleMouseUp={handleMouseUp}
+             onMouseMove={handleMouseMove}>
             <ScrollPanel style={{ width: '100%', height: '100%' }}>
-                <Control onStart={startSequencer} onStop={stopSequencer} onReset={resetSequencer} bpmValue={bpmValue} setBpmValue={setBpmValue}  />
-                <Cursor position={cursorPosition} nbTrack={tracks.length} onMove={handleCursorMove} width={100*tracks[0].notes.length} />
+                <Control
+                    onStart={startSequencer}
+                    onStop={stopSequencer}
+                    onReset={resetSequencer}
+                    bpmValue={bpmValue}
+                    setBpmValue={setBpmValue}  />
+                <Cursor
+                    position={cursorPosition}
+                    nbTrack={tracks.length}
+                    onMove={handleCursorMove}
+                    width={100 * tracks[0].notes.length}
+                    handleMouseDown={handleMouseDown}
+                    handleMouseUp={handleMouseUp}
+                />
                 {tracks.map((track, index) => (
                     <Track key={index} notes={track.notes} height={60} width={100*track.notes.length}  />
                 ))}
