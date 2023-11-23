@@ -16,7 +16,6 @@ const Cursor = ({ position, nbTrack, onMove, width}) => {
                 backgroundColor: 'red',
                 position: 'absolute',
                 left: position + 'px',
-                transition: 'left 0.3s ease',
             }}/>
     );
 };

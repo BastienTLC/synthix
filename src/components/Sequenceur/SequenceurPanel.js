@@ -4,6 +4,8 @@ import Track from './Track/Track';
 import Cursor from './Cursor/Cursor';
 import Control from './Control/Control';
 import { useSynthContext } from '../../context/SynthContext';
+import './SequenceurPanel.css';
+import { ScrollPanel } from 'primereact/scrollpanel';
 
 
 const SequencerPanel = () => {
@@ -11,6 +13,7 @@ const SequencerPanel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const { playNoteDirect } = useSynthContext();
+    const [bpmValue, setBpmValue] = useState(1);
 
     const keyConfigurations = [
         { label: 'A4', frequency: '440'},
@@ -26,8 +29,11 @@ const SequencerPanel = () => {
     ];
 
     const tracks = [
-        { notes: [null, null, null, keyConfigurations[0]] },
-        { notes: [null, keyConfigurations[0], null, null] },
+        { notes: [null, null, null, keyConfigurations[0],keyConfigurations[0]] },
+        { notes: [keyConfigurations[1], keyConfigurations[7], null, null] },
+        { notes: [null, keyConfigurations[0], null, keyConfigurations[9]] },
+        { notes: [keyConfigurations[5], null, keyConfigurations[5], keyConfigurations[3]] },
+        { notes: [keyConfigurations[2], keyConfigurations[10], null, null] },
         // Add more tracks as needed
     ];
 
@@ -40,7 +46,7 @@ const SequencerPanel = () => {
 
                 pNote(newIndex);
             }
-            setCursorPosition((prevPosition) => prevPosition + 1);
+            setCursorPosition((prevPosition) => prevPosition + (bpmValue));
 
         }
     };
@@ -66,13 +72,14 @@ const SequencerPanel = () => {
     };
 
     return (
-        <div style={{height: "500px", width:"800px"}}>
-            <Control onStart={startSequencer} onStop={stopSequencer} onReset={resetSequencer} />
-            <Cursor position={cursorPosition} nbTrack={tracks.length} onMove={handleCursorMove} width={100*tracks[0].notes.length} />
-            {tracks.map((track, index) => (
-                <Track key={index} notes={track.notes} height={60} width={100*track.notes.length} cursorPosition={cursorPosition}  />
-            ))}
-
+        <div style={{ width: '100%', height: '100%' }}>
+            <ScrollPanel style={{ width: '100%', height: '100%' }}>
+                <Control onStart={startSequencer} onStop={stopSequencer} onReset={resetSequencer} bpmValue={bpmValue} setBpmValue={setBpmValue}  />
+                <Cursor position={cursorPosition} nbTrack={tracks.length} onMove={handleCursorMove} width={100*tracks[0].notes.length} />
+                {tracks.map((track, index) => (
+                    <Track key={index} notes={track.notes} height={60} width={100*track.notes.length}  />
+                ))}
+            </ScrollPanel>
         </div>
     );
 };

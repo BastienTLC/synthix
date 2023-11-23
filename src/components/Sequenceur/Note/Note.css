@@ -1,0 +1,17 @@
+.timeline-note{
+    background-color: var(--primary-color);
+    width: 100px;
+    height: 30px;
+    border-radius: 5px; /* Add this line to round the corners */
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3); /* Add this line to create a 3D effect with a shadow */
+    margin: 5px;
+    text-align: center;
+}
+
+.timeline-space{
+    background-color: var(--surface-50);
+    width: 100px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
