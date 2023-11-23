@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Knob } from 'primereact/knob';
-import { SelectButton } from 'primereact/selectbutton';
+import { Dropdown } from 'primereact/dropdown';
 import { useSynthContext } from '../../context/SynthContext';
 import './ControlPanel.css';
+import sinelogo from '../../gfx/svg/wave-sine-bold.svg';
+import sawtoothlogo from '../../gfx/svg/wave-sawtooth-bold.svg';
+import trianglelogo from '../../gfx/svg/wave-triangle-bold.svg';
+import squarelogo from '../../gfx/svg/wave-square-bold.svg';
+import { ChevronDownIcon } from 'primereact/icons/chevrondown';
+import { ChevronRightIcon } from 'primereact/icons/chevronright';
+//import 'primeflex/primeflex.css'; 
 
 const ControlPanel = () => {
   // Define state variables for controlling the synth
@@ -16,12 +23,13 @@ const ControlPanel = () => {
 
   useEffect( () => {
     const intervalId = setInterval(() => {
-      synth.set({envelope: {
-        attack: attack/100,
-        decay: decay/100,
-        sustain: sustain/100,
-        release: release/100,
-      },
+      synth.set({
+        envelope: {
+          attack: attack/100,
+          decay: decay/100,
+          sustain: sustain/100,
+          release: release/100,
+        },
         oscillator: {
           type: type
         }
@@ -30,20 +38,54 @@ const ControlPanel = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [attack, decay, sustain, release, synth]);
+  }, [attack, decay, sustain, release, synth, type]);
 
   const items = [
-    { name: 'Sine', value: "sine" },
-    { name: 'Sawtooth', value: "sawtooth" },
-    { name: 'Triangle', value: "triangle" },
-    { name: 'Square', value: "square" }
+    { name: 'Sine', value: "sine"},
+    { name: 'Sawtooth', value: "sawtooth"},
+    { name: 'Triangle', value: "triangle"},
+    { name: 'Square', value: "square"}
   ];
-  
+
+  const selectedCountryTemplate = (option, props) => {
+      if (option) {
+          return (
+              <div className="choix-dropdown">
+                  { option.value === "sine" ? <img alt={option.name} src={sinelogo} className="wave-logo" /> : null}
+                  { option.value === "sawtooth" ? <img alt={option.name} src={sawtoothlogo} className="wave-logo" /> : null}
+                  { option.value === "triangle" ? <img alt={option.name} src={trianglelogo} className="wave-logo" /> : null}
+                  { option.value === "square" ? <img alt={option.name} src={squarelogo} className="wave-logo" /> : null}
+                  <div>{option.name}</div>
+              </div>
+          );
+      }
+
+      return <span>{props.placeholder}</span>;
+  };
+
+  const countryOptionTemplate = (option) => {
+      return (
+          <div className="choix-dropdown"> 
+                {/* /!\ c'est un peu débile de faire comme ça mais j'ai essayé d'assigner les logo
+                  dans leur propre champ dans l'objet item mais ça marche pas; donc pour l'instant on fait comme ça */} 
+              { option.value === "sine" ? <img alt={option.name} src={sinelogo} className="wave-logo" /> : null}
+              { option.value === "sawtooth" ? <img alt={option.name} src={sawtoothlogo} className="wave-logo" /> : null}
+              { option.value === "triangle" ? <img alt={option.name} src={trianglelogo} className="wave-logo" /> : null}
+              { option.value === "square" ? <img alt={option.name} src={squarelogo} className="wave-logo" /> : null}
+              <div>{option.name}</div>
+          </div>
+      );
+  };
+
   return (
     <div className="synth-control-panel">
-      <div className="card flex justify-content-center">
-        <SelectButton value={type} onChange={(e) => setType(e.value)} optionLabel="name" options={items} />
-      </div>
+      <div className="selection-forme-onde">
+        <Dropdown value={type} onChange={(e) => setType(e.value)} options={items} optionLabel="name" placeholder="Select waveform" 
+          valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} className="w-full md:w-14rem"  
+          dropdownIcon={(opts) => {
+                  return opts.iconProps['data-pr-overlay-visible'] ? <ChevronRightIcon {...opts.iconProps} /> : <ChevronDownIcon {...opts.iconProps} />;
+                }}/>
+      </div>  
 
       <div className="knob-text-combo">
         <Knob value={volume} onChange={(e) => { synth.volume.value=(e.value-70)/2; setVolume(e.value); }} />
