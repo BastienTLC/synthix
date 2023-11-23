@@ -6,7 +6,7 @@ import { SynthProvider } from '../context/SynthContext';
 import SequenceurPanel from "../components/Sequenceur/SequenceurPanel";
 import { Splitter, SplitterPanel } from 'primereact/splitter';
 import { Dialog } from 'primereact/dialog';
-import synthixLogo from '../synthix_logo.png';
+import synthixLogo from '../gfx/synthix_logo.png';
 import './StudioPage.css';
 //import { Tone } from 'tone/build/esm/core/Tone';
 import * as Tone from 'tone';

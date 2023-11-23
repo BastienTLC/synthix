@@ -1,9 +1,8 @@
 // PianoPanel.js
-import React , {useEffect, useState, useMemo} from 'react';
+import React , {useState, useMemo} from 'react';
 import { useSynthContext } from '../../context/SynthContext';
 import NoteBind from './NoteBind';
 import './PianoPanel.css';
-import * as Tone from 'tone';
 
 const PianoPanel = () => {
     const [keysPressed, setKeysPressed] = useState([]);
@@ -35,7 +34,6 @@ const PianoPanel = () => {
         { label: 'B5', frequency: '987.77'},
         { label: 'C6', frequency: '1046.5'},
     ];
-
     
     const handleKeyDown = (event) => {
       // Vérif si la touche appuyée n'est pas déjà dans le tableau.
