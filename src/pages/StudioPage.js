@@ -5,12 +5,15 @@ import ControlPanel from '../components/Controls/ControlPanel';
 import { SynthProvider } from '../context/SynthContext';
 import SequenceurPanel from "../components/Sequenceur/SequenceurPanel";
 import { Splitter, SplitterPanel } from 'primereact/splitter';
+import { Dialog } from 'primereact/dialog';
 import synthixLogo from '../synthix_logo.png';
 import './StudioPage.css';
 //import { Tone } from 'tone/build/esm/core/Tone';
 import * as Tone from 'tone';
 
 const StudioPage = () => {
+    const [aPropos, setaPropos] = useState(false);
+    
     const [windowDimensions, setWindowDimensions] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -42,9 +45,17 @@ const StudioPage = () => {
     return (
 
         <div className={"synth-full-panel"} style={synthFullPanelStyle} onMouseDown={allowAudioContext} >
-            <div className="header-logo">
-                <img src={synthixLogo} alt="" />
+            <div className="header-logo"  >
+                <img src={synthixLogo} alt="" draggable="false" onClick = {() => { setaPropos(true) }}  />
             </div>
+            <Dialog header="Synthix" visible={aPropos} style={{ width: '50vw' }} onHide={() => setaPropos(false)}>
+                <p className="m-0">
+                    Développé par Jean-Marin RIBARIC et Bastien TALEC.
+                    <br />
+                    <br />
+                    <i>Synthix 2023</i>
+                </p>
+            </Dialog>
             <SynthProvider>
                 <Splitter className={"synth-splitter"} style={{ height: '95%' }}>
                     <SplitterPanel size={95}>

@@ -2,3 +2,9 @@
     background-color: var(--highlight-bg);
     display: flex;
 }
+
+.knob-text-combo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
