@@ -10,7 +10,7 @@ const SynthContext = createContext();
  */
 export const SynthProvider = ({ children }) => {
     const [envelope] = useState({ attack: 0, decay: 0.5, sustain: 0, release: 0.2 });
-    const [analyser] = useState(new Tone.Analyser('waveform', 256));
+    const [analyser] = useState(new Tone.Analyser('waveform', 64));
     const [synth] = useState(new Tone.PolySynth( {maxPolyphony:32, voice: Tone.Synth , options:{ volume:-10, envelope: envelope, oscillator: { type : "sawtooth"}}}  ).connect(analyser).toDestination());
     const [waveform, setWaveform] = useState(analyser.getValue());
     

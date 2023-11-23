@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect,useRef, useState } from 'react';
-import * as Tone from 'tone';
+import React, { createContext, useContext } from 'react';
+//import * as Tone from 'tone';
 
 const NoteContext = createContext(); 
 
