@@ -1,3 +1,11 @@
 .p-splitter-panel{
     background-color: var(--highlight-bg);
 }
+
+.header-logo {
+    height: 5%;
+    background-color: var(--primary-500);
+}
+.header-logo img{
+    height: 100%;
+}
