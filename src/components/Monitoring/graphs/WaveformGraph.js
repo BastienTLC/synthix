@@ -82,7 +82,7 @@ const WaveformGraph = ( ) => {
         return () => {
             clearInterval(intervalId);
         };
-    }, [waveform]);
+    }, [waveform, updateWaveform]);
 
     return (
         <div className={"waveform-graph"} style={style}> {/* idée: mettre un truc qui vérifie si le data.labels est un array car sinon il se chie dessus */} 

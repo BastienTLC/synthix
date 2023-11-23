@@ -9,13 +9,13 @@ const SynthContext = createContext();
  * @returns 
  */
 export const SynthProvider = ({ children }) => {
-    const [envelope] = useState({ attack: 0, decay: 0.8, sustain: 0, release: 0.8 });
+    const [envelope] = useState({ attack: 0, decay: 0.5, sustain: 0, release: 0.2 });
     const [analyser] = useState(new Tone.Analyser('waveform', 256));
-    const [synth] = useState(new Tone.PolySynth( {maxPolyphony:32, voice: Tone.Synth , options:{ volume:10, envelope: envelope, oscillator: { type : "sawtooth"}}}  ).connect(analyser).toDestination());
+    const [synth] = useState(new Tone.PolySynth( {maxPolyphony:32, voice: Tone.Synth , options:{ volume:-10, envelope: envelope, oscillator: { type : "sawtooth"}}}  ).connect(analyser).toDestination());
     const [waveform, setWaveform] = useState(analyser.getValue());
     
-    const handleEnvelopeChange = (valeursEnvelope) => {
-        synth.envelope = valeursEnvelope;
+    const envelopeChange = (valeursEnvelope) => {
+        synth.set({envelope: valeursEnvelope});
     };
     
     const playNoteDirect = (notes) => {
@@ -24,10 +24,10 @@ export const SynthProvider = ({ children }) => {
 
     const updateWaveform = () => {
         setWaveform(analyser.getValue());
-    }
+    };
 
     return (
-        <SynthContext.Provider value={ {analyser, synth, waveform, updateWaveform, handleEnvelopeChange, playNoteDirect} }>
+        <SynthContext.Provider value={ {analyser, synth, waveform, updateWaveform, envelopeChange, playNoteDirect} }>
             {children}
         </SynthContext.Provider>
     );
