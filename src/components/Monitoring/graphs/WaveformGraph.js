@@ -26,7 +26,7 @@ const WaveformGraph = ( ) => {
                 type: 'linear',
                 position: 'bottom',
                 min: 0,
-                max: 256, // Valeur maximale pour l'axe des x
+                max: 64, // Valeur maximale pour l'axe des x
                 ticks: {
                     display: false, // Masque les valeurs de l'axe des y
                 },
