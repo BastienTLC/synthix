@@ -18,10 +18,6 @@ export const SynthProvider = ({ children }) => {
         synth.envelope = valeursEnvelope;
     };
     
-    const handleVolumeChange = (nvVolume) => {
-        synth.options.volume = nvVolume;
-    };
-    
     const playNoteDirect = (notes) => {
         synth.triggerAttackRelease(notes, "3n");
     };
@@ -31,7 +27,7 @@ export const SynthProvider = ({ children }) => {
     }
 
     return (
-        <SynthContext.Provider value={ {analyser, synth, waveform, updateWaveform, handleEnvelopeChange, handleVolumeChange, playNoteDirect} }>
+        <SynthContext.Provider value={ {analyser, synth, waveform, updateWaveform, handleEnvelopeChange, playNoteDirect} }>
             {children}
         </SynthContext.Provider>
     );

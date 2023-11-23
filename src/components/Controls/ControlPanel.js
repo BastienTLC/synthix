@@ -5,12 +5,12 @@ import './ControlPanel.css';
 
 const ControlPanel = () => {
   // Define state variables for controlling the synth
-  const { synth } = useSynthContext();
-  const [volume, setVolume] = useState(synth.options.volume);
+  const {synth } = useSynthContext();
+  const [volume, setVolume] = useState(75);
   
   return (
     <div className="synth-control-panel">
-      <Knob value={volume} onChange={(e) => { synth.options.volume = e.value; setVolume(e.value); }} />
+      <Knob value={volume} onChange={(e) => { synth.volume.value=(e.value-70)/2; setVolume(e.value); }} />
     </div>
   );
 };
