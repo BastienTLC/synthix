@@ -5,14 +5,20 @@ import ControlPanel from '../components/Controls/ControlPanel';
 import { SynthProvider } from '../context/SynthContext';
 import SequenceurPanel from "../components/Sequenceur/SequenceurPanel";
 import { Splitter, SplitterPanel } from 'primereact/splitter';
-import { Dialog } from 'primereact/dialog';
 import synthixLogo from '../gfx/synthix_logo.png';
+import { Dialog } from 'primereact/dialog';
+import { SelectButton } from 'primereact/selectbutton';
 import './StudioPage.css';
 //import { Tone } from 'tone/build/esm/core/Tone';
 import * as Tone from 'tone';
 
 const StudioPage = () => {
     const [aPropos, setaPropos] = useState(false);
+    const [tab, setTab] = useState("Config");
+
+    const tabItems = [
+        "Config", "Filtre"
+    ];
     
     const [windowDimensions, setWindowDimensions] = useState({
         width: window.innerWidth,
@@ -47,6 +53,7 @@ const StudioPage = () => {
         <div className={"synth-full-panel"} style={synthFullPanelStyle} onMouseDown={allowAudioContext} >
             <div className="header-logo"  >
                 <img src={synthixLogo} alt="" draggable="false" onClick = {() => { setaPropos(true) }}  />
+                <SelectButton value={tab} onChange={(e) => setTab(e.value)} options={tabItems} />
             </div>
             <Dialog header="Synthix" visible={aPropos} style={{ width: '50vw' }} onHide={() => setaPropos(false)}>
                 <p className="m-0">
@@ -66,7 +73,7 @@ const StudioPage = () => {
                                         <MonitoringPanel />
                                     </SplitterPanel>
                                     <SplitterPanel className="flex align-items-center justify-content-center" size={50}>
-                                        <ControlPanel />
+                                        <ControlPanel chosenTab={tab}/>
                                     </SplitterPanel>
                                 </Splitter>
                             </SplitterPanel>

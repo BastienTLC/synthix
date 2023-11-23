@@ -3,10 +3,18 @@
 }
 
 .header-logo {
-    height: 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 34px;
     background: linear-gradient(0deg, var(--primary-800) -13900%, var(--primary-800) 0%, var(--primary-500) 10%, var(--primary-600) 100%, var(--primary-100) 1015%, var(--primary-100) 5615%);
 }
 
 .header-logo img{
     height: 100%;
+}
+
+.header-logo SelectButton{
+    max-height: 100%;
+    
 }

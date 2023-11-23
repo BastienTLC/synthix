@@ -1,26 +1,3 @@
 .synth-control-panel{
     background-color: var(--highlight-bg);
-    display: flex;
-}
-
-.knob-text-combo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.synth-control-panel .selection-forme-onde{
-    min-width: 176px;
-}
-.wave-logo {
-    height: 18px;
-    width: 18px;
-    display: inline-block;
-}
-.choix-dropdown{
-    display: flex;
-    align-items: center;
-}
-.choix-dropdown .wave-logo{
-    margin-right: 10px;
 }
