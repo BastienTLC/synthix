@@ -59,7 +59,7 @@ const ConfigTab = () => {
   return (
     <div className="synth-config-tab">
       <div className="selection-forme-onde">
-        <Dropdown value={type} onChange={(e) => setType(e.value)} options={items} optionLabel="name" placeholder="Select waveform" 
+        <Dropdown value={type} onChange={(e) => {synth.set({oscillator: {type: e.value}}); setType(e.value);} } options={items} optionLabel="name" placeholder="Select waveform" 
           valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} className="w-full md:w-14rem"  
           dropdownIcon={(opts) => {
                   return opts.iconProps['data-pr-overlay-visible'] ? <ChevronRightIcon {...opts.iconProps} /> : <ChevronDownIcon {...opts.iconProps} />;
