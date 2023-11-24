@@ -16,6 +16,7 @@ const SequencerPanel = () => {
     const { playNoteDirect } = useSynthContext();
     const [bpmValue, setBpmValue] = useState(1);
 
+
     const keyConfigurations = [
         { label: 'A4', frequency: '440'},
         { label: 'B4', frequency: '493.88'},
@@ -28,15 +29,35 @@ const SequencerPanel = () => {
         { label: 'B5', frequency: '987.77'},
         { label: 'C6', frequency: '1046.5'},
     ];
-
-    const tracks = [
-        { notes: [null, null, null, keyConfigurations[0],keyConfigurations[0]] },
-        { notes: [keyConfigurations[1], keyConfigurations[7], null, null] },
-        { notes: [null, keyConfigurations[0], null, keyConfigurations[9]] },
-        { notes: [keyConfigurations[5], null, keyConfigurations[5], keyConfigurations[3]] },
-        { notes: [keyConfigurations[2], keyConfigurations[10], null, null] },
+    const [tracks, setTracks] = useState([
+        { notes: [keyConfigurations[0], keyConfigurations[2], null, keyConfigurations[4], null, keyConfigurations[7], null, keyConfigurations[9]] },
+        { notes: [keyConfigurations[1], null, keyConfigurations[3], null, keyConfigurations[5], null, keyConfigurations[8], keyConfigurations[10]] },
+        { notes: [null, null, keyConfigurations[2], null, null, keyConfigurations[7], null, null] },
+        { notes: [keyConfigurations[4], null, keyConfigurations[6], null, keyConfigurations[9], null, keyConfigurations[0], null] },
+        { notes: [null, keyConfigurations[1], null, keyConfigurations[5], null, keyConfigurations[8], null, keyConfigurations[10]] },
         // Add more tracks as needed
-    ];
+    ]);
+
+
+    const handleNoteDrop = (draggedTimelineIndex, draggedKeyNote, targetTimelineIndex, targetKeyNote) => {
+        // Copiez l'état actuel des tracks
+        const newTracks = [...tracks];
+
+        // Récupérez les notes des timelines concernées
+        console.log(draggedTimelineIndex, draggedKeyNote, targetTimelineIndex, targetKeyNote);
+        const draggedNotes = newTracks[draggedTimelineIndex].notes;
+        const targetNotes = newTracks[targetTimelineIndex].notes;
+
+        // Échangez les notes entre les timelines
+        const draggedNote = draggedNotes[draggedKeyNote];
+        const targetNote = targetNotes[targetKeyNote];
+
+        draggedNotes[draggedKeyNote] = targetNote;
+        targetNotes[targetKeyNote] = draggedNote;
+
+        // Mettez à jour l'état avec le nouvel état
+        setTracks(newTracks);
+    };
 
     const handleCursorMove = () => {
         if (isPlaying && cursorPosition < 100 * tracks[0].notes.length) {
@@ -106,7 +127,13 @@ const SequencerPanel = () => {
                     handleMouseUp={handleMouseUp}
                 />
                 {tracks.map((track, index) => (
-                    <Track key={index} notes={track.notes} height={60} width={100*track.notes.length}  />
+                    <Track
+                        key={index}
+                        trackIndex={index}
+                        notes={track.notes}
+                        height={60}
+                        onNoteDrop={handleNoteDrop}
+                    />
                 ))}
             </ScrollPanel>
         </div>

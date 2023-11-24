@@ -1,38 +1,52 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useSynthContext } from '../../../context/SynthContext';
 import './Note.css';
 
 
-const Note = ({ note, setDraggedNote, key, onDropNote }) => {
+const Note = ({ note, keyNote, timelineIndex, onDragStart, onDragOver, onDrop }) => {
     const { playNoteDirect } = useSynthContext();
 
-    const handleDragStart = () => {
-        setDraggedNote(key);
+    const handleDragStart = (e) => {
+        e.dataTransfer.setData('text/plain', JSON.stringify({ keyNote, timelineIndex }));
+        onDragStart && onDragStart(e);
     };
 
-    const handleDragEnd = () => {
-        setDraggedNote(null);
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        onDragOver && onDragOver(e);
     };
 
-    const handleDrop = () => {
-        onDropNote && onDropNote(key);
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const draggedData = JSON.parse(e.dataTransfer.getData('text/plain'));
+        const draggedKeyNote = draggedData.keyNote;
+        const draggedTimelineIndex = draggedData.timelineIndex;
+        console.log(draggedTimelineIndex, draggedKeyNote, timelineIndex, keyNote);
+        onDrop && onDrop(draggedTimelineIndex, draggedKeyNote, timelineIndex, keyNote);
     };
 
     if (note) {
         return (
             <div
-                draggable={true}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-                onDrop={handleDrop}
+                id={keyNote}
                 className={'timeline-note'}
+                draggable
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
                 onClick={() => playNoteDirect([note.frequency])}
             >
                 {note.label}
             </div>
         );
     } else {
-        return <div className={'timeline-space'}></div>;
+        return <div
+            className={'timeline-space'}
+            draggable
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+        ></div>;
     }
 };
 
