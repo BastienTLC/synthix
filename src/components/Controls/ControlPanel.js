@@ -7,8 +7,8 @@ const ControlPanel = ( {chosenTab} ) => {
 
   return (
     <div className="synth-control-panel">
-      { chosenTab==="Config" ? <ConfigTab /> : null }
-      { chosenTab==="Filtre" ? <FilterTab /> : null }
+      { chosenTab===0 ? <ConfigTab /> : null }
+      { chosenTab===1 ? <FilterTab /> : null }
     </div>
   );
 };

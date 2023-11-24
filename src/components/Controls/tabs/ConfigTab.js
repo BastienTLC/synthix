@@ -13,21 +13,21 @@ import { ChevronRightIcon } from 'primereact/icons/chevronright';
 const ConfigTab = () => {
   // Define state variables for controlling the synth
   const {synth} = useSynthContext();
-  const [volume, setVolume] = useState(50);
-  const [attack, setAttack] = useState(0);
-  const [decay, setDecay] = useState(50);
-  const [sustain, setSustain] = useState(0);
-  const [release, setRelease] = useState(20);
+  const [volume, setVolume] = useState(75);
+  const [attack, setAttack] = useState(synth.options.envelope.attack);
+  const [decay, setDecay] = useState(synth.options.envelope.decay);
+  const [sustain, setSustain] = useState(synth.options.envelope.sustain*100);
+  const [release, setRelease] = useState(synth.options.envelope.release);
   const [type, setType] = useState(synth.options.oscillator.type);
 
   useEffect( () => {
     const intervalId = setInterval(() => {
       synth.set({
         envelope: {
-          attack: attack/100,
-          decay: decay/100,
+          attack: attack,
+          decay: decay,
           sustain: sustain/100,
-          release: release/100,
+          release: release,
         },
         oscillator: {
           type: type
@@ -98,7 +98,7 @@ const ConfigTab = () => {
         <p>Decay</p>
       </div>
       <div className="knob-text-combo">
-        <Knob value={sustain} onChange={(e) => {setSustain(e.value); }} />
+        <Knob value={sustain} onChange={(e) => {setSustain(e.value); }} valueTemplate={'{value}%'}    />
         <p>Sustain</p>
       </div>
       <div className="knob-text-combo">

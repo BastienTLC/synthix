@@ -7,23 +7,25 @@ import SequenceurPanel from "../components/Sequenceur/SequenceurPanel";
 import { Splitter, SplitterPanel } from 'primereact/splitter';
 import synthixLogo from '../gfx/synthix_logo.png';
 import { Dialog } from 'primereact/dialog';
-import { SelectButton } from 'primereact/selectbutton';
+import { TabMenu } from 'primereact/tabmenu';
 import './StudioPage.css';
 //import { Tone } from 'tone/build/esm/core/Tone';
 import * as Tone from 'tone';
 
 const StudioPage = () => {
     const [aPropos, setaPropos] = useState(false);
-    const [tab, setTab] = useState("Config");
+    const [tab, setTab] = useState(0);
 
     const tabItems = [
-        "Config", "Filtre"
+        {label: 'Config', icon: 'pi pi-fw pi-sliders-h'},
+        {label: 'Filter', icon: 'pi pi-fw pi-credit-card'}
     ];
     
     const [windowDimensions, setWindowDimensions] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
     });
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -53,7 +55,7 @@ const StudioPage = () => {
         <div className={"synth-full-panel"} style={synthFullPanelStyle} onMouseDown={allowAudioContext} >
             <div className="header-logo"  >
                 <img src={synthixLogo} alt="" draggable="false" onClick = {() => { setaPropos(true) }}  />
-                <SelectButton value={tab} onChange={(e) => setTab(e.value)} options={tabItems} />
+                <TabMenu model={tabItems} activeIndex={tab} onTabChange={(e) => setTab(e.index)} />
             </div>
             <Dialog header="Synthix" visible={aPropos} style={{ width: '50vw' }} onHide={() => setaPropos(false)}>
                 <p className="m-0">

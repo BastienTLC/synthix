@@ -9,11 +9,11 @@ const SynthContext = createContext();
  * @returns 
  */
 export const SynthProvider = ({ children }) => {
-    const [envelope] = useState({ attack: 0, decay: 0.5, sustain: 0, release: 0.2 });
+    const [envelope] = useState({ attack: 0, decay: 20, sustain: 0, release: 2 });
     const [analyser] = useState(new Tone.Analyser('waveform', 64));
 //    const [filter] = useState(new Tone.Filter(1400, "lowpass").connect(analyser).toDestination());
 // /* synthe avec filtre: */    const [synth] = useState(new Tone.PolySynth( {maxPolyphony:32, voice: Tone.Synth , options:{ volume:-10, envelope: envelope, oscillator: { type : "sawtooth"}}}  ).connect(filter));
-    const [synth] = useState(new Tone.PolySynth( {maxPolyphony:32, voice: Tone.Synth , options:{ volume:-10, envelope: envelope, oscillator: { type : "sine"}}}  ).connect(analyser).toDestination());
+    const [synth] = useState(new Tone.PolySynth( {maxPolyphony:32, voice: Tone.Synth , options:{ volume:-20, envelope: envelope, oscillator: { type : "sine"}}}  ).connect(analyser).toDestination());
     const [waveform, setWaveform] = useState(analyser.getValue());
     
     const envelopeChange = (valeursEnvelope) => {
