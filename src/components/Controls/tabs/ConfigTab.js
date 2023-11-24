@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Knob } from 'primereact/knob';
 import { Dropdown } from 'primereact/dropdown';
 import { useSynthContext } from '../../../context/SynthContext';
@@ -19,25 +19,6 @@ const ConfigTab = () => {
   const [sustain, setSustain] = useState(synth.options.envelope.sustain*100);
   const [release, setRelease] = useState(synth.options.envelope.release);
   const [type, setType] = useState(synth.options.oscillator.type);
-
-  useEffect( () => {
-    const intervalId = setInterval(() => {
-      synth.set({
-        envelope: {
-          attack: attack,
-          decay: decay,
-          sustain: sustain/100,
-          release: release,
-        },
-        oscillator: {
-          type: type
-        }
-      });
-    }, 500); // Appelle la fonction toutes les 100 millisecondes (ajuste selon tes besoins)
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [attack, decay, sustain, release, synth, type]);
 
   const items = [
     { name: 'Sine', value: "sine"},
@@ -90,19 +71,19 @@ const ConfigTab = () => {
         <p>Volume</p>
       </div>
       <div className="knob-text-combo">
-        <Knob value={attack} onChange={(e) => {setAttack(e.value); }} />
+        <Knob value={attack} onChange={(e) => { synth.set({envelope: {attack: e.value}}); setAttack(e.value); }} min={0} max={2} step={.1} valueTemplate={'{value}s'} />
         <p>Attack</p>
       </div>
       <div className="knob-text-combo">
-        <Knob value={decay} onChange={(e) => {setDecay(e.value); }} />
+        <Knob value={decay} onChange={(e) => { synth.set({envelope: {decay: e.value}}); setDecay(e.value); }} min={0} max={2} step={.1} valueTemplate={'{value}s'} />
         <p>Decay</p>
       </div>
       <div className="knob-text-combo">
-        <Knob value={sustain} onChange={(e) => {setSustain(e.value); }} valueTemplate={'{value}%'}    />
+        <Knob value={sustain} onChange={(e) => { synth.set({envelope: {sustain: e.value/100}}); setSustain(e.value); }} valueTemplate={'{value}%'}    />
         <p>Sustain</p>
       </div>
       <div className="knob-text-combo">
-        <Knob value={release} onChange={(e) => {setRelease(e.value); }} />
+        <Knob value={release} onChange={(e) => { synth.set({envelope: {release: e.value}}); setRelease(e.value); }} min={0} max={5} step={.1}  valueTemplate={'{value}s'} />
         <p>Release</p>
       </div>
     </div>
