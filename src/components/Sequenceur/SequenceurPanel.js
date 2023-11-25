@@ -1,11 +1,10 @@
 // Sequencer.js
-import React, { useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Track from './Track/Track';
 import Cursor from './Cursor/Cursor';
 import Control from './Control/Control';
 import { useSynthContext } from '../../context/SynthContext';
 import './SequenceurPanel.css';
-import { ScrollPanel } from 'primereact/scrollpanel';
 
 
 const SequencerPanel = () => {
@@ -15,7 +14,8 @@ const SequencerPanel = () => {
     const [isDragging, setIsDragging] = useState(false);
     const { playNoteDirect } = useSynthContext();
     const [bpmValue, setBpmValue] = useState(1);
-
+    const [noteSize, setNoteSize] = useState(100);
+    const containerRef = useRef(null);
 
     const keyConfigurations = [
         { label: 'A4', frequency: '440'},
@@ -35,9 +35,16 @@ const SequencerPanel = () => {
         { notes: [null, null, keyConfigurations[2], null, null, keyConfigurations[7], null, null] },
         { notes: [keyConfigurations[4], null, keyConfigurations[6], null, keyConfigurations[9], null, keyConfigurations[0], null] },
         { notes: [null, keyConfigurations[1], null, keyConfigurations[5], null, keyConfigurations[8], null, keyConfigurations[10]] },
-        // Add more tracks as needed
     ]);
+    const maxTimelineLength = Math.max(...tracks.map(track => track.notes.length));
 
+
+
+    useEffect(() => {
+        if (containerRef.current) {
+            setNoteSize(containerRef.current.offsetWidth / maxTimelineLength);
+        }
+    }, []);
 
     const handleNoteDrop = (draggedTimelineIndex, draggedKeyNote, targetTimelineIndex, targetKeyNote) => {
         // Copiez l'état actuel des tracks
@@ -60,15 +67,15 @@ const SequencerPanel = () => {
     };
 
     const handleCursorMove = () => {
-        if (isPlaying && cursorPosition < 100 * tracks[0].notes.length) {
-            const newIndex = Math.floor(cursorPosition / 100);
+        if (isPlaying && cursorPosition < noteSize * maxTimelineLength) {
+            const newIndex = Math.floor(cursorPosition / noteSize);
             if (newIndex !== currentIndex) {
                 console.log(tracks[newIndex]);
                 setCurrentIndex(newIndex);
 
                 pNote(newIndex);
             }
-            setCursorPosition((prevPosition) => prevPosition + (bpmValue));
+            setCursorPosition((prevPosition) => prevPosition + (bpmValue)*(noteSize/100));
 
         }
     };
@@ -107,22 +114,31 @@ const SequencerPanel = () => {
         }
     };
 
+    const handleScroll = (event) => {
+        if (event.deltaY < 0) {
+            setNoteSize((prevNoteSize) => Math.min(prevNoteSize + 10,400));
+        } else if (event.deltaY > 0) {
+            setNoteSize((prevNoteSize) => Math.max (prevNoteSize - 10, 10));
+        }
+    };
+
     return (
-        <div style={{ width: '100%', height: '100%', cursor: isDragging ? 'grabbing' : '', }}
-             handleMouseUp={handleMouseUp}
-             onMouseMove={handleMouseMove}>
-            <ScrollPanel style={{ width: '100%', height: '100%' }}>
+        <div ref={containerRef} style={{cursor: isDragging ? 'grabbing' : '', }}
+             className={'synth-sequence-panel'}
+             onMouseMove={handleMouseMove}
+             onWheel={handleScroll}>
                 <Control
                     onStart={startSequencer}
                     onStop={stopSequencer}
                     onReset={resetSequencer}
                     bpmValue={bpmValue}
                     setBpmValue={setBpmValue}  />
+            <div className={"timeline-container"} style={{width: `${noteSize*maxTimelineLength}px`}}>
                 <Cursor
                     position={cursorPosition}
                     nbTrack={tracks.length}
                     onMove={handleCursorMove}
-                    width={100 * tracks[0].notes.length}
+                    width={noteSize * tracks[0].notes.length}
                     handleMouseDown={handleMouseDown}
                     handleMouseUp={handleMouseUp}
                 />
@@ -131,11 +147,13 @@ const SequencerPanel = () => {
                         key={index}
                         trackIndex={index}
                         notes={track.notes}
+                        width={noteSize * maxTimelineLength}
                         height={60}
                         onNoteDrop={handleNoteDrop}
+                        noteSize={noteSize}
                     />
                 ))}
-            </ScrollPanel>
+            </div>
         </div>
     );
 };
