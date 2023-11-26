@@ -4,3 +4,21 @@
     background-color: var(--surface-50);
     border-bottom: rgba(0, 0, 0, 0.3) solid 1px;
 }
+.left-piano{
+    border-right: rgba(0, 0, 0, 0.3) solid 1px;
+    height: 100%;
+    width:40px;
+
+}
+.left-piano-note{
+    text-align: center;
+    color: var(--text-color);
+    //background-color: var(--primary-color);
+    height: 100%;
+    border: rgba(0, 0, 0, 0.3) solid 1px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 10px;
+    flex-shrink: 0;
+    flex-grow: 0;
+}

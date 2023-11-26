@@ -24,12 +24,17 @@ export const SynthProvider = ({ children }) => {
         synth.triggerAttackRelease(notes, "3n");
     };
 
+    const playCustomNote = (notes, config) => {
+        const synth = new Tone.Synth(config).toDestination();
+        synth.triggerAttackRelease(notes, "3n");
+    };
+
     const updateWaveform = () => {
         setWaveform(analyser.getValue());
     };
 
     return (
-        <SynthContext.Provider value={ {analyser, synth, filter, waveform,  updateWaveform, envelopeChange, playNoteDirect} }>
+        <SynthContext.Provider value={ {analyser, synth, filter, waveform,  updateWaveform, envelopeChange, playNoteDirect, playCustomNote} }>
             {children}
         </SynthContext.Provider>
     );

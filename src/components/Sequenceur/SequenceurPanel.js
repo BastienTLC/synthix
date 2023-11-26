@@ -8,12 +8,13 @@ import './SequenceurPanel.css';
 
 
 const SequencerPanel = () => {
-    const [cursorPosition, setCursorPosition] = useState(-1);
+    const [cursorPosition, setCursorPosition] = useState(39);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
-    const { playNoteDirect } = useSynthContext();
-    const [bpmValue, setBpmValue] = useState(1);
+    const { playNoteDirect, playCustomNote } = useSynthContext();
+    const [bpmValue, setBpmValue] = useState(6);
+    const [config, setConfig] = useState(null);
     const [noteSize, setNoteSize] = useState(100);
     const containerRef = useRef(null);
 
@@ -29,20 +30,34 @@ const SequencerPanel = () => {
         { label: 'B5', frequency: '987.77'},
         { label: 'C6', frequency: '1046.5'},
     ];
+
+    const generateRandomArray = (length) => {
+        return Array.from({ length }, () => Math.random() < 0.5 ? 0 : 1);
+    };
+
+    const generateZeroArray = (length) => {
+        return Array.from({ length }, () => 0);
+    };
+
     const [tracks, setTracks] = useState([
-        { notes: [keyConfigurations[0], keyConfigurations[2], null, keyConfigurations[4], null, keyConfigurations[7], null, keyConfigurations[9]] },
-        { notes: [keyConfigurations[1], null, keyConfigurations[3], null, keyConfigurations[5], null, keyConfigurations[8], keyConfigurations[10]] },
-        { notes: [null, null, keyConfigurations[2], null, null, keyConfigurations[7], null, null] },
-        { notes: [keyConfigurations[4], null, keyConfigurations[6], null, keyConfigurations[9], null, keyConfigurations[0], null] },
-        { notes: [null, keyConfigurations[1], null, keyConfigurations[5], null, keyConfigurations[8], null, keyConfigurations[10]] },
+        { note: "A4", track: generateZeroArray(32) },
+        { note: "B4", track: generateZeroArray(32) },
+        { note: "C5", track: generateZeroArray(32) },
+        { note: "D5", track: generateZeroArray(32) },
+        { note: "E5", track: generateZeroArray(32) },
+        { note: "F5", track: generateZeroArray(32) },
+        { note: "G5", track: generateZeroArray(32) },
+        { note: "A5", track: generateZeroArray(32) },
+        { note: "B5", track: generateZeroArray(32) },
+        { note: "C6", track: generateZeroArray(32) },
     ]);
-    const maxTimelineLength = Math.max(...tracks.map(track => track.notes.length));
+    const maxTimelineLength = Math.max(...tracks.map(track => track.track.length));
 
 
 
     useEffect(() => {
         if (containerRef.current) {
-            setNoteSize(containerRef.current.offsetWidth / maxTimelineLength);
+            setNoteSize((containerRef.current.offsetWidth - 40) / maxTimelineLength);
         }
     }, []);
 
@@ -52,8 +67,8 @@ const SequencerPanel = () => {
 
         // Récupérez les notes des timelines concernées
         console.log(draggedTimelineIndex, draggedKeyNote, targetTimelineIndex, targetKeyNote);
-        const draggedNotes = newTracks[draggedTimelineIndex].notes;
-        const targetNotes = newTracks[targetTimelineIndex].notes;
+        const draggedNotes = newTracks[draggedTimelineIndex].track;
+        const targetNotes = newTracks[targetTimelineIndex].track;
 
         // Échangez les notes entre les timelines
         const draggedNote = draggedNotes[draggedKeyNote];
@@ -66,13 +81,22 @@ const SequencerPanel = () => {
         setTracks(newTracks);
     };
 
+    const handleSetNote = (trackIndex, keyNote) => {
+        // Copiez l'état actuel des tracks
+        if (config){
+            const newTracks = [...tracks];
+            newTracks[trackIndex].track[keyNote] = config;
+            console.log(newTracks);
+            setTracks(newTracks);
+            playCustomNote(tracks[trackIndex].note, config);
+        }
+    };
+
     const handleCursorMove = () => {
-        if (isPlaying && cursorPosition < noteSize * maxTimelineLength) {
+        if (isPlaying && cursorPosition < noteSize * maxTimelineLength + 40) {//nombre de notes * taille d'une note - piano
             const newIndex = Math.floor(cursorPosition / noteSize);
             if (newIndex !== currentIndex) {
-                console.log(tracks[newIndex]);
                 setCurrentIndex(newIndex);
-
                 pNote(newIndex);
             }
             setCursorPosition((prevPosition) => prevPosition + (bpmValue)*(noteSize/100));
@@ -82,8 +106,11 @@ const SequencerPanel = () => {
 
     const pNote = (index) => {
         tracks.forEach((track) => {
-            if (track.notes[index]) {
-                playNoteDirect([track.notes[index].frequency]);
+            if (track.track[index]) {
+                if (track.track[index] !== 1){
+                    playCustomNote(track.note, track.track[index]);
+                }
+                playNoteDirect(track.note);
             }
         });
     };
@@ -97,7 +124,7 @@ const SequencerPanel = () => {
     };
 
     const resetSequencer = () => {
-        setCursorPosition(0);
+        setCursorPosition(39);
     };
 
     const handleMouseDown = () => {
@@ -115,10 +142,12 @@ const SequencerPanel = () => {
     };
 
     const handleScroll = (event) => {
-        if (event.deltaY < 0) {
-            setNoteSize((prevNoteSize) => Math.min(prevNoteSize + 10,400));
-        } else if (event.deltaY > 0) {
-            setNoteSize((prevNoteSize) => Math.max (prevNoteSize - 10, 10));
+        if (event.shiftKey) {
+            if (event.deltaY < 0) {
+                setNoteSize((prevNoteSize) => Math.min(prevNoteSize + 10,400));
+            } else if (event.deltaY > 0) {
+                setNoteSize((prevNoteSize) => Math.max (prevNoteSize - 10, 10));
+            }
         }
     };
 
@@ -132,25 +161,30 @@ const SequencerPanel = () => {
                     onStop={stopSequencer}
                     onReset={resetSequencer}
                     bpmValue={bpmValue}
-                    setBpmValue={setBpmValue}  />
+                    setBpmValue={setBpmValue}
+                    setConfig={setConfig}
+                />
             <div className={"timeline-container"} style={{width: `${noteSize*maxTimelineLength}px`}}>
                 <Cursor
                     position={cursorPosition}
                     nbTrack={tracks.length}
                     onMove={handleCursorMove}
-                    width={noteSize * tracks[0].notes.length}
+                    width={noteSize * maxTimelineLength}
                     handleMouseDown={handleMouseDown}
                     handleMouseUp={handleMouseUp}
                 />
                 {tracks.map((track, index) => (
                     <Track
-                        key={index}
-                        trackIndex={index}
-                        notes={track.notes}
-                        width={noteSize * maxTimelineLength}
+                        key={index}//0
+                        trackIndex={index}//0
+                        trackKeyNote={track.note}//"A4"
+                        notes={track.track}//[true, null, null, true, null]
+                        width={noteSize * maxTimelineLength}//nombre de notes * taille d'une note - piano
                         height={60}
-                        onNoteDrop={handleNoteDrop}
-                        noteSize={noteSize}
+                        onNoteDrop={handleNoteDrop}//(draggedTimelineIndex, draggedKeyNote, targetTimelineIndex, targetKeyNote)
+                        noteSize={noteSize}//taille de la note en px
+                        isPlaying={isPlaying}
+                        onSetNote={handleSetNote}
                     />
                 ))}
             </div>

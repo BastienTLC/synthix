@@ -5,7 +5,7 @@ import ControlPanel from '../components/Controls/ControlPanel';
 import { SynthProvider } from '../context/SynthContext';
 import SequenceurPanel from "../components/Sequenceur/SequenceurPanel";
 import { Splitter, SplitterPanel } from 'primereact/splitter';
-import synthixLogo from '../gfx/synthix_logo.png';
+import synthixLogo from '../resources/gfx/synthix_logo.png';
 import { Dialog } from 'primereact/dialog';
 import { TabMenu } from 'primereact/tabmenu';
 import './StudioPage.css';

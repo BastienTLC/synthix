@@ -4,11 +4,11 @@ import './Note.css';
 import { ContextMenu } from 'primereact/contextmenu';
 
 
-const Note = ({ note, keyNote, timelineIndex, onDragStart, onDragOver, onDrop, noteSize }) => {
+const Note = ({ isPlay, note, keyNote, timelineIndex, onDragStart, onDragOver, onDrop, onSetNote, noteSize  }) => {
     const { playNoteDirect } = useSynthContext();
     const cm = useRef(null);
     const items = [
-        { label: 'View', icon: 'pi pi-fw pi-search' },
+        { label: 'View', icon: 'pi pi-fw pi-search', command: () => { console.log("coucou")} },
         { label: 'Delete', icon: 'pi pi-fw pi-trash' }
     ];
 
@@ -31,7 +31,11 @@ const Note = ({ note, keyNote, timelineIndex, onDragStart, onDragOver, onDrop, n
         onDrop && onDrop(draggedTimelineIndex, draggedKeyNote, timelineIndex, keyNote);
     };
 
-    if (note) {
+    const handleSetNote = () => {
+        onSetNote(keyNote);
+    };
+
+    if (isPlay) {
         return (
             <div>
                 <ContextMenu model={items} ref={cm} breakpoint="767px" />
@@ -43,10 +47,10 @@ const Note = ({ note, keyNote, timelineIndex, onDragStart, onDragOver, onDrop, n
                     onDragStart={handleDragStart}
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
-                    onClick={() => playNoteDirect([note.frequency])}
+                    onClick={() => playNoteDirect([note])}
                     onContextMenu={(e) => cm.current.show(e)}
                 >
-                    {noteSize > 20 && <span>{note.label}</span>}
+                    {noteSize > 20 && <span>{note}</span>}
                 </div>
             </div>
 
@@ -59,6 +63,7 @@ const Note = ({ note, keyNote, timelineIndex, onDragStart, onDragOver, onDrop, n
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
+            onClick={handleSetNote}
         ></div>;
     }
 };

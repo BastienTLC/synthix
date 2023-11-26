@@ -3,10 +3,10 @@ import { Knob } from 'primereact/knob';
 import { Dropdown } from 'primereact/dropdown';
 import { useSynthContext } from '../../../context/SynthContext';
 import './ConfigTab.css';
-import sinelogo from '../../../gfx/svg/wave-sine-bold.svg';
-import sawtoothlogo from '../../../gfx/svg/wave-sawtooth-bold.svg';
-import trianglelogo from '../../../gfx/svg/wave-triangle-bold.svg';
-import squarelogo from '../../../gfx/svg/wave-square-bold.svg';
+import sinelogo from '../../../resources/gfx/svg/wave-sine-bold.svg';
+import sawtoothlogo from '../../../resources/gfx/svg/wave-sawtooth-bold.svg';
+import trianglelogo from '../../../resources/gfx/svg/wave-triangle-bold.svg';
+import squarelogo from '../../../resources/gfx/svg/wave-square-bold.svg';
 import { ChevronDownIcon } from 'primereact/icons/chevrondown';
 import { ChevronRightIcon } from 'primereact/icons/chevronright';
 
