@@ -90,6 +90,13 @@ const SequencerPanel = () => {
             setTracks(newTracks);
             playCustomNote(tracks[trackIndex].note, config);
         }
+        else{
+            const newTracks = [...tracks];
+            newTracks[trackIndex].track[keyNote] = 1;
+            console.log(newTracks);
+            setTracks(newTracks);
+            playNoteDirect(tracks[trackIndex].note);
+        }
     };
 
     const handleCursorMove = () => {
