@@ -12,15 +12,25 @@ const NoteBind = ({ config, keyInput, detectedInputs }) => {
         playNoteDirect([config.frequency]);
     }, [config, playNoteDirect]);
 
-    const handleMouseDown = () => { 
-        monRef.current.style.background = '#444';
-        monRef.current.style.border = '1px solid #333';
-    };
+    const handleMouseDown = useCallback(() => { 
+        if(config.label.charAt(1) === '#'){
+            monRef.current.style.background = '#444';
+            monRef.current.style.border = '1px solid #333';
+        } else {
+            monRef.current.style.background = '#444';
+            monRef.current.style.border = '1px solid #333';
+        }
+    }, [config.label]);
     
     const handleMouseUp = useCallback(() => { // on re-initialise le style.
-        monRef.current.style.background = '#fff';
-        monRef.current.style.border = '1px solid #333';
-    }, []);
+        if(config.label.charAt(1) === '#'){
+            monRef.current.style.background = '#000';
+            monRef.current.style.border = '1px solid #333';
+        } else {
+            monRef.current.style.background = '#fff';
+            monRef.current.style.border = '1px solid #333';
+        }
+    }, [config.label]);
     
     useEffect(() => {
         if(detectedInputs.includes(keyInput)){
@@ -28,11 +38,11 @@ const NoteBind = ({ config, keyInput, detectedInputs }) => {
         }else{
             handleMouseUp(); //Utilisation du style 'keyInput inactive'
         }
-    }, [keyInput, detectedInputs, handleMouseUp, handleNote]);
+    }, [keyInput, detectedInputs, handleMouseDown, handleMouseUp, handleNote]);
     
     return (
-        <button className='synth-note-bind' ref={monRef} onClick={handleNote} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} >
-            {config.label}
+        <button className={`synth-note-bind ${config.label.charAt(1) === '#' ? 'touche-diese' : 'touche-normale'}`} ref={monRef} onClick={handleNote} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} >
+            <div className="nom-note">{config.label}</div>
         </button>
     );
 };
