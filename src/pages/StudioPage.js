@@ -43,7 +43,7 @@ const StudioPage = () => {
     }, []);
     const synthFullPanelStyle = {
         height: `${window.innerHeight}px`, // Hauteur basée sur la fenêtre
-        width: `${window.innerWidth}px`,   // Largeur basée sur la fenêtre
+        width: `100%`,   // Largeur basée sur la fenêtre
         margin: 0,
     };
     const allowAudioContext = async () => {
@@ -66,26 +66,22 @@ const StudioPage = () => {
                 </p>
             </Dialog>
             <SynthProvider>
-                <Splitter className={"synth-splitter"} style={{ height: '95%' }}>
-                    <SplitterPanel size={95}>
-                        <Splitter layout="vertical" style={{ height: '100%' }}>
-                            <SplitterPanel size={30}>
-                                <Splitter>
-                                    <SplitterPanel className="flex align-items-center justify-content-center" size={50}>
-                                        <MonitoringPanel />
-                                    </SplitterPanel>
-                                    <SplitterPanel className="flex align-items-center justify-content-center" size={50}>
-                                        <ControlPanel chosenTab={tab}/>
-                                    </SplitterPanel>
-                                </Splitter>
+                <Splitter layout="vertical" style={{ height: '100%' }}>
+                    <SplitterPanel size={30}>
+                        <Splitter>
+                            <SplitterPanel className="flex align-items-center justify-content-center" size={50}>
+                                <MonitoringPanel />
                             </SplitterPanel>
-                            <SplitterPanel className="flex align-items-center justify-content-center" size={40}>
-                                <PianoPanel />
-                            </SplitterPanel>
-                            <SplitterPanel className="flex align-items-center justify-content-center" size={30}>
-                                <SequenceurPanel />
+                            <SplitterPanel className="flex align-items-center justify-content-center" size={50}>
+                                <ControlPanel chosenTab={tab}/>
                             </SplitterPanel>
                         </Splitter>
+                    </SplitterPanel>
+                    <SplitterPanel className="flex align-items-center justify-content-center" size={40}>
+                        <PianoPanel />
+                    </SplitterPanel>
+                    <SplitterPanel className="flex align-items-center justify-content-center" size={30}>
+                        <SequenceurPanel />
                     </SplitterPanel>
                 </Splitter>
             </SynthProvider>
