@@ -18,7 +18,8 @@ const StudioPage = () => {
 
     const tabItems = [
         {label: 'Config', icon: 'pi pi-fw pi-sliders-h'},
-        {label: 'Filter', icon: 'pi pi-fw pi-credit-card'}
+        {label: 'Filter', icon: 'pi pi-fw pi-credit-card'},
+        {label: 'Effets', icon: 'pi pi-fw pi-credit-card'}
     ];
     
     const [windowDimensions, setWindowDimensions] = useState({
