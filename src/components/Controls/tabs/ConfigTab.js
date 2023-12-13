@@ -64,27 +64,28 @@ const ConfigTab = () => {
           dropdownIcon={(opts) => {
                   return opts.iconProps['data-pr-overlay-visible'] ? <ChevronRightIcon {...opts.iconProps} /> : <ChevronDownIcon {...opts.iconProps} />;
                 }}/>
-      </div>  
-
-      <div className="knob-text-combo">
-        <Knob value={volume} onChange={(e) => { synth.volume.value=(e.value-70)/2; setVolume(e.value); }} />
-        <p>Volume</p>
       </div>
-      <div className="knob-text-combo">
-        <Knob value={attack} onChange={(e) => { synth.set({envelope: {attack: e.value}}); setAttack(e.value); }} min={0} max={2} step={.1} valueTemplate={'{value}s'} />
-        <p>Attack</p>
-      </div>
-      <div className="knob-text-combo">
-        <Knob value={decay} onChange={(e) => { synth.set({envelope: {decay: e.value}}); setDecay(e.value); }} min={0} max={2} step={.1} valueTemplate={'{value}s'} />
-        <p>Decay</p>
-      </div>
-      <div className="knob-text-combo">
-        <Knob value={sustain} onChange={(e) => { synth.set({envelope: {sustain: e.value/100}}); setSustain(e.value); }} valueTemplate={'{value}%'}    />
-        <p>Sustain</p>
-      </div>
-      <div className="knob-text-combo">
-        <Knob value={release} onChange={(e) => { synth.set({envelope: {release: e.value}}); setRelease(e.value); }} min={0} max={5} step={.1}  valueTemplate={'{value}s'} />
-        <p>Release</p>
+      <div className="knob-container">
+          <div className="knob-text-combo">
+              <Knob value={volume} onChange={(e) => { synth.volume.value=(e.value-70)/2; setVolume(e.value); }} />
+              <p>Volume</p>
+          </div>
+          <div className="knob-text-combo">
+              <Knob value={attack} onChange={(e) => { synth.set({envelope: {attack: e.value}}); setAttack(e.value); }} min={0} max={2} step={.1} valueTemplate={'{value}s'} />
+              <p>Attack</p>
+          </div>
+          <div className="knob-text-combo">
+              <Knob value={decay} onChange={(e) => { synth.set({envelope: {decay: e.value}}); setDecay(e.value); }} min={0} max={2} step={.1} valueTemplate={'{value}s'} />
+              <p>Decay</p>
+          </div>
+          <div className="knob-text-combo">
+              <Knob value={sustain} onChange={(e) => { synth.set({envelope: {sustain: e.value/100}}); setSustain(e.value); }} valueTemplate={'{value}%'}    />
+              <p>Sustain</p>
+          </div>
+          <div className="knob-text-combo">
+              <Knob value={release} onChange={(e) => { synth.set({envelope: {release: e.value}}); setRelease(e.value); }} min={0} max={5} step={.1}  valueTemplate={'{value}s'} />
+              <p>Release</p>
+          </div>
       </div>
     </div>
   );
