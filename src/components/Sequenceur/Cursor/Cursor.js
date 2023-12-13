@@ -15,7 +15,7 @@ const Cursor = ({ position, nbTrack, onMove, width, handleMouseDown, handleMouse
         <div
             style={{
                 width: '5px',
-                height: `${nbTrack * 60 + 'px'}`,
+                height: `${nbTrack * 30 + 'px'}`,
                 backgroundColor: 'red',
                 position: 'absolute',
                 left: position + 'px',

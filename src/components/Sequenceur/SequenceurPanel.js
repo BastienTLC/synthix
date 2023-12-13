@@ -18,38 +18,41 @@ const SequencerPanel = () => {
     const [noteSize, setNoteSize] = useState(100);
     const containerRef = useRef(null);
 
-    const keyConfigurations = [
-        { label: 'A4', frequency: '440'},
-        { label: 'B4', frequency: '493.88'},
-        { label: 'C5', frequency: '523.25'},
-        { label: 'D5', frequency: '587.33'},
-        { label: 'E5', frequency: '659.25'},
-        { label: 'F5', frequency: '698.46'},
-        { label: 'G5', frequency: '783.99'},
-        { label: 'A5', frequency: '880'  },
-        { label: 'B5', frequency: '987.77'},
-        { label: 'C6', frequency: '1046.5'},
-    ];
-
-    const generateRandomArray = (length) => {
-        return Array.from({ length }, () => Math.random() < 0.5 ? 0 : 1);
-    };
 
     const generateZeroArray = (length) => {
         return Array.from({ length }, () => 0);
     };
 
     const [tracks, setTracks] = useState([
+        { note: "C3", track: generateZeroArray(32) },
+        { note: "C#3", track: generateZeroArray(32) },
+        { note: "D3", track: generateZeroArray(32) },
+        { note: "D#3", track: generateZeroArray(32) },
+        { note: "E3", track: generateZeroArray(32) },
+        { note: "F3", track: generateZeroArray(32) },
+        { note: "F#3", track: generateZeroArray(32) },
+        { note: "G3", track: generateZeroArray(32) },
+        { note: "G#3", track: generateZeroArray(32) },
+        { note: "A3", track: generateZeroArray(32) },
+        { note: "A#3", track: generateZeroArray(32) },
+        { note: "B3", track: generateZeroArray(32) },
+        { note: "C4", track: generateZeroArray(32) },
+        { note: "C#4", track: generateZeroArray(32) },
+        { note: "D4", track: generateZeroArray(32) },
+        { note: "D#4", track: generateZeroArray(32) },
+        { note: "E4", track: generateZeroArray(32) },
+        { note: "F4", track: generateZeroArray(32) },
+        { note: "F#4", track: generateZeroArray(32) },
+        { note: "G4", track: generateZeroArray(32) },
+        { note: "G#4", track: generateZeroArray(32) },
         { note: "A4", track: generateZeroArray(32) },
+        { note: "A#4", track: generateZeroArray(32) },
         { note: "B4", track: generateZeroArray(32) },
         { note: "C5", track: generateZeroArray(32) },
+        { note: "C#5", track: generateZeroArray(32) },
         { note: "D5", track: generateZeroArray(32) },
+        { note: "D#5", track: generateZeroArray(32) },
         { note: "E5", track: generateZeroArray(32) },
-        { note: "F5", track: generateZeroArray(32) },
-        { note: "G5", track: generateZeroArray(32) },
-        { note: "A5", track: generateZeroArray(32) },
-        { note: "B5", track: generateZeroArray(32) },
-        { note: "C6", track: generateZeroArray(32) },
     ]);
     const maxTimelineLength = Math.max(...tracks.map(track => track.track.length));
 
@@ -59,14 +62,13 @@ const SequencerPanel = () => {
         if (containerRef.current) {
             setNoteSize((containerRef.current.offsetWidth - 40) / maxTimelineLength);
         }
-    }, []);
+    }, [maxTimelineLength]);
 
     const handleNoteDrop = (draggedTimelineIndex, draggedKeyNote, targetTimelineIndex, targetKeyNote) => {
         // Copiez l'état actuel des tracks
         const newTracks = [...tracks];
 
         // Récupérez les notes des timelines concernées
-        console.log(draggedTimelineIndex, draggedKeyNote, targetTimelineIndex, targetKeyNote);
         const draggedNotes = newTracks[draggedTimelineIndex].track;
         const targetNotes = newTracks[targetTimelineIndex].track;
 
@@ -86,17 +88,22 @@ const SequencerPanel = () => {
         if (config){
             const newTracks = [...tracks];
             newTracks[trackIndex].track[keyNote] = config;
-            console.log(newTracks);
             setTracks(newTracks);
             playCustomNote(tracks[trackIndex].note, config);
         }
         else{
             const newTracks = [...tracks];
             newTracks[trackIndex].track[keyNote] = 1;
-            console.log(newTracks);
             setTracks(newTracks);
             playNoteDirect(tracks[trackIndex].note);
         }
+    };
+
+    const handleDeleteNote = (trackIndex, keyNote) => {
+        const newTracks = [...tracks];
+        newTracks[trackIndex].track[keyNote] = 0;
+        setTracks(newTracks);
+
     };
 
     const handleCursorMove = () => {
@@ -187,11 +194,12 @@ const SequencerPanel = () => {
                         trackKeyNote={track.note}//"A4"
                         notes={track.track}//[true, null, null, true, null]
                         width={noteSize * maxTimelineLength}//nombre de notes * taille d'une note - piano
-                        height={60}
+                        height={30}
                         onNoteDrop={handleNoteDrop}//(draggedTimelineIndex, draggedKeyNote, targetTimelineIndex, targetKeyNote)
                         noteSize={noteSize}//taille de la note en px
                         isPlaying={isPlaying}
                         onSetNote={handleSetNote}
+                        onDeleteNote={handleDeleteNote}
                     />
                 ))}
             </div>

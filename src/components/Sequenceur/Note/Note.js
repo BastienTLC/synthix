@@ -4,12 +4,12 @@ import './Note.css';
 import { ContextMenu } from 'primereact/contextmenu';
 
 
-const Note = ({ isPlay, note, keyNote, timelineIndex, onDragStart, onDragOver, onDrop, onSetNote, noteSize  }) => {
+const Note = ({ isPlay, note, keyNote, timelineIndex, onDragStart, onDragOver, onDrop, onSetNote, onDeleteNote, noteSize  }) => {
     const { playNoteDirect } = useSynthContext();
     const cm = useRef(null);
     const items = [
         { label: 'View', icon: 'pi pi-fw pi-search', command: () => { console.log("coucou")} },
-        { label: 'Delete', icon: 'pi pi-fw pi-trash' }
+        { label: 'Delete', icon: 'pi pi-fw pi-trash', command: () => { handleDeleteNote()} },
     ];
 
     const handleDragStart = (e) => {
@@ -32,7 +32,11 @@ const Note = ({ isPlay, note, keyNote, timelineIndex, onDragStart, onDragOver, o
     };
 
     const handleSetNote = () => {
-        onSetNote(keyNote);
+       onSetNote && onSetNote(keyNote);
+    };
+
+    const handleDeleteNote = () => {
+        onDeleteNote && onDeleteNote(keyNote);
     };
 
     if (isPlay) {
