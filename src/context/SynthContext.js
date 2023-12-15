@@ -11,7 +11,7 @@ const SynthContext = createContext();
 export const SynthProvider = ({ children }) => {
     const [envelope] = useState({ attack: 0.0, decay: 2.0, sustain: 0.0, release: 2.0 });
     const [analyser] = useState(new Tone.Analyser('waveform', 64));
-    const [delay] = useState(new Tone.FeedbackDelay({delayTime: 0.5, feedback: 0.5, wet: 0.8}).connect(analyser).toDestination());
+    const [delay] = useState(new Tone.FeedbackDelay({delayTime: 0.0, feedback: 0.5, wet: 0.8}).connect(analyser).toDestination());
     const [filter] = useState(new Tone.Filter(20000, "lowpass").connect(delay));
 /* synthe avec filtre: */    const [synth] = useState(new Tone.PolySynth( {maxPolyphony:64, voice: Tone.Synth , options:{ volume:-10, envelope: envelope, oscillator: { type : "sawtooth"}}}  ).connect(filter));
 //   /* synthe sans filtre: */ const [synth] = useState(new Tone.PolySynth( {maxPolyphony:32, voice: Tone.Synth , options:{ volume:-20, envelope: envelope, oscillator: { type : "sine"}}}  ).connect(analyser).toDestination());
