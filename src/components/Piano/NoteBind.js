@@ -41,9 +41,11 @@ const NoteBind = ({ config, keyInput, detectedInputs }) => {
     }, [keyInput, detectedInputs, handleMouseDown, handleMouseUp, handleNote]);
     
     return (
-        <button className={`synth-note-bind ${config.label.charAt(1) === '#' ? 'touche-diese' : 'touche-normale'}`} ref={monRef} onClick={handleNote} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} >
-            <div className="nom-note">{config.label}</div>
-        </button>
+        <div className="parent">
+            <button className={`synth-note-bind ${config.label.charAt(1) === '#' ? 'touche-diese' : 'touche-normale'}`} ref={monRef} onClick={handleNote} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} >
+                <div className="nom-note">{config.label}</div>
+            </button>
+        </div>
     );
 };
 
