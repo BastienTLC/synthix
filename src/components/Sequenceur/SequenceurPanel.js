@@ -147,7 +147,7 @@ const SequencerPanel = () => {
 
     const handleMouseUp = () => {
         setIsDragging(false);
-    };
+    } ;
 
     const handleMouseMove = (event) => {
         if (isDragging) {
