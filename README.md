@@ -1,70 +1,71 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Bien sûr, voici une version améliorée de la description du début du README :
 
-## Available Scripts
+markdown
+Copy code
+# Synthix
 
-In the project directory, you can run:
+Synthix est une application React JS innovante qui allie la puissance d'un synthétiseur et d'un séquenceur pour vous permettre de créer des compositions musicales uniques et captivantes. Explorez des possibilités infinies de création sonore avec une interface conviviale et des fonctionnalités avancées.
 
-### `npm start`
+![Texte alternatif](syntix.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Fonctionnalités
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Visualisation de l'onde sonore
+- Explorez la fréquence et le volume de votre création sonore en temps réel.
 
-### `npm test`
+### Modulation du son
+- **Onglet Config :**
+  - Ajustez le volume, l'attaque, le decay, le sustain et la release pour une modulation précise du son.
+  - Choisissez parmi différentes formes d'onde telles que Sine, Sawtooth, Triangle et Square pour une diversité sonore maximale.
+- **Onglet Filter :**
+  - Contrôlez le cutOff pour affiner le caractère de votre son.
+- **Effets :**
+  - Ajoutez un effet de delay pour une profondeur sonore supplémentaire.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Synthétiseur
+- Toutes les touches d'un synthétiseur
+- Raccourcis : 
+  - 'w' -> "C3"
+  - 's' -> "C#3"
+  - 'x' -> "D3"
+  - 'd' -> "D#3"
+  - 'c' -> "E3"
+  - 'v' -> "F3"
+  - 'g' -> "F#3"
+  - 'b' -> "G3"
+  - 'h' -> "G#3"
+  - 'n' -> "A3"
+  - 'j' -> "A#3"
+  - ',' -> "B3"
+  - 'a' -> "C4"
+  - 'é' -> "C#4"
+  - 'z' -> "D4"
+  - '"' -> "D#4"
+  - 'e' -> "E4"
+  - 'r' -> "F4"
+  - '(' -> "F#4"
+  - 't' -> "G4"
+  - '§' -> "G#4"
+  - 'y' -> "A4"
+  - 'è' -> "A#4"
+  - 'u' -> "B4"
+  - 'i' -> "C5"
+  - 'ç' -> "C#5"
+  - 'o' -> "D5"
+  - 'à' -> "D#5"
+  - 'p' -> "E5"
 
-### `npm run build`
+### Séquenceur
+- Créez, déplacez et supprimez des notes pour composer vos propres séquences musicales.
+- Modifiez les notes avec les paramètres de modulation du son pour une personnalisation complète.
+- Jouez, mettez en pause, rejouez et ajustez les BPM pour perfectionner votre composition.
+- Des raccourcis pratiques, comme Shift + molette, vous permettent de naviguer facilement dans la timeline.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Démo
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Découvrez par vous-même les possibilités musicales de Synthix en essayant notre démo [ici](http://bastientlc.freeboxos.fr:3001/).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Réalisateurs
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Synthix a été réalisé avec passion par Bastien Talec et Jean-Marin Ribaric.
