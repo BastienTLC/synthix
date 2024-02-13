@@ -7,7 +7,7 @@ Copy code
 
 Synthix est une application React JS innovante qui allie la puissance d'un synthétiseur et d'un séquenceur pour vous permettre de créer des compositions musicales uniques et captivantes. Explorez des possibilités infinies de création sonore avec une interface conviviale et des fonctionnalités avancées.
 
-![Texte alternatif](syntix.png)
+![Texte alternatif](synthix.png)
 
 ## Fonctionnalités
 
