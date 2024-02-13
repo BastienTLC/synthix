@@ -1,9 +1,5 @@
 
-Bien sûr, voici une version améliorée de la description du début du README :
-
-markdown
-Copy code
-# Synthix
+# [Synthix](http://bastientlc.freeboxos.fr:3001/)
 
 Synthix est une application React JS innovante qui allie la puissance d'un synthétiseur et d'un séquenceur pour vous permettre de créer des compositions musicales uniques et captivantes. Explorez des possibilités infinies de création sonore avec une interface conviviale et des fonctionnalités avancées.
 
